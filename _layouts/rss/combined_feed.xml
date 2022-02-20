@@ -36,25 +36,25 @@
 
         <language>{{ site.data.podlove.rss.common.language }}</language>
 
-        {% comment %}
+        {%- comment -%}
             Just the list of contributors to the entire podcast.
-        {% endcomment %}
+        {%- endcomment -%}
 
-        {% for contributor in site.data.podlove.rss.common.contributors %}
+        {%- for contributor in site.data.podlove.rss.common.contributors -%}
         <atom:contributor>
             <atom:name>
                 {{ contributor.name }}
             </atom:name>
         </atom:contributor>
-        {% endfor %}
+        {%- endfor -%}
 
-        {% comment %}
+        {%- comment -%}
             And then again, but now with images, in a different format.
-        {% endcomment %}
+        {%- endcomment -%}
 
-        {% for contributor in site.data.podlove.rss.common.contributors %}
+        {%- for contributor in site.data.podlove.rss.common.contributors -%}
         <podcast:person img="{{ contributor.avatar }}">{{ contributor.name}}</podcast:person>
-        {% endfor %}
+        {%- endfor -%}
 
         <generator>{{ site.data.podlove.common.generator }}</generator>
         <copyright>{{ site.data.podlove.common.copyright }</copyright>
@@ -62,9 +62,9 @@
         <itunes:author>{{ site.data.podlove.common.itunes.type.episodic }}</itunes:author>
         <itunes:summary><![CDATA[{{ site.data.podlove.summary }}]]></itunes:summary>
         <itunes:category text="{{ site.data.podlove.rss.common.itunes.category">
-            {% if site.data.podlove.rss.common.itunes.subcategory %}
+            {%- if site.data.podlove.rss.common.itunes.subcategory -%}
             <itunes:category text="{{ site.data.podlove.rss.common.itunes.subcategory }}"></itunes:category>
-            {% endif %}
+            {%- endif -%}
         </itunes:category>
 
         <itunes:owner>
@@ -77,27 +77,27 @@
         <itunes:block>{{ site.data.podlove.rss.common.itunes.block }}</itunes:block>
         <itunes:explicit>{{ site.data.podlove.rss.common.itunes.explicit }}</itunes:explicit>
 
-        {% comment %}
+        {%- comment -%}
             I need the list of episodes, in an uncertain order... Maybe reversed?
-        {% endcomment %}
+        {%- endcomment -%}
 
-        {% assign ep_list = site.episodes %}
+        {%- assign ep_list = site.episodes -%}
 
-        {% for episode in ep_list %}
-            {% comment %}
+        {%- for episode in ep_list -%}
+            {%- comment -%}
                 Make sure it's "really" an episode first
 
                 TODO: Does this have to be scoped?
-            {% endcomment %}
+            {%- endcomment -%}
             
-            {% assign swp_process = false %}
+            {%- assign swp_process = false -%}
             
-            {% for cat in episode.categories %}
-            {% if "Episodes" == cat %}
-                {% assign swp_process = true %}
-            {% endif %}
+            {%- for cat in episode.categories -%}
+            {%- if "Episodes" == cat -%}
+                {%- assign swp_process = true -%}
+            {%- endif -%}
 
-            {% if swp_process %}
+            {%- if swp_process -%}
         <item>
             <title>{{ episode.title }}</title>
             <link>{{ site.url }}/{{ episode.permalink }}</link>
@@ -114,7 +114,7 @@
                 type="{{ episode.audio.mimetype }}"
             />
 
-            {% assign swp_int = episode.episode.duration | split: "." %}
+            {%- assign swp_int = episode.episode.duration | split: "." -%}
 
             <itunes:duration>{{ swp_int[0] }}</itunes:duration>
             <itunes:author>{{ site.data.podlove.common.itunes.author }}</itunes.author>
@@ -127,44 +127,44 @@
             <content:encoded><![CDATA[
                 {{ episode.contents }}
             ]]></content:encoded>
-            {% if episode.chapters and episode.chapters.size != 0 %}
+            {%- if episode.chapters and episode.chapters.size != 0 -%}
             <psc:chapters xmlns:psc="http://podlove.org/simple-chapters" version="1.2">
-                {% for chapter in episode.chapters %}
+                {%- for chapter in episode.chapters -%}
                 <psc:chapter
                     start="{{ chapter.start }}"
                     title="{{ chapter.title }}"
                 />
-                {% endfor %}
+                {%- endfor -%}
             </psc:chapters>
-            {% endif %}
+            {%- endif -%}
             <itunes:season>{{ episode.order.season }}</itunes:season>
 
-                {% for contributor in episode.contributors %}
-                    {%  assign swp_contrib = site.data.contributors | find: "id", contributor.id %}
+                {%- for contributor in episode.contributors -%}
+                    {%- assign swp_contrib = site.data.contributors | find: "id", contributor.id -%}
             <atom:contributor><atom:name>{{ swp_contrib.nick_name | default: swp_contrib.full_name }}</atom:name></atom:contributor>
-                {% endfor %}
+                {%- endfor -%}
             
-                {% for contributor in episode.contributors %}
-                    {%  assign swp_contrib = site.data.contributors | find: "id", contributor.id %}
+                {%- for contributor in episode.contributors -%}
+                    {%- assign swp_contrib = site.data.contributors | find: "id", contributor.id -%}
             <podcast:person img="{{ swp_contrib.avatar }}">{{ swp_contrib.nick_name | default: swp_contrib.full_name }}</podcast:person>
-                {% endfor %}
+                {%- endfor -%}
 
-                {% if episode.transcripts and episode.chapters.size != 0 %}
-                    {% for transcript in episode.transcripts %}
+                {%- if episode.transcripts and episode.chapters.size != 0 -%}
+                    {%- for transcript in episode.transcripts -%}
             <podcast:transcript
                 url="{{ site.url }}/{{ transcript.url }}"
-                        {% if transcript.format == "webvtt" %}
+                        {%- if transcript.format == "webvtt" -%}
                 type="text/vtt"
-                        {% elsif transcript.format == "json" %}
+                        {%- elsif transcript.format == "json" -%}
                 type="application/json"
-                        {% elsif transcript.format == "xml" %}
+                        {%- elsif transcript.format == "xml" -%}
                 type="application/xml"
-                        {% endif %}
+                        {%- endif -%}
             />
-                    {% endfor %}
-                {% endif %}
-            {% endif %}
+                    {%- endfor -%}
+                {%- endif -%}
+            {%- endif -%}
         </item>
-        {% endfor %}
+        {%- endfor -%}
     </channel>
 </rss>

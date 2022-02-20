@@ -1,19 +1,19 @@
 ---
 layout: default
 ---
-{% comment %}
+{%- comment -%}
 Podlove stuff
-{% endcomment %}
+{%- endcomment -%}
 <script>
     podlovePlayer('#podlove', '{{ site.url }}/res/podlove/episode/{{ page.permalink }}/episode.json', '{{ site.url }}/res/podlove/config.json');
 </script>
 
-{% comment %}
+{%- comment -%}
 Things to make the collapse text work right.
 
 Please see:
 https://stackoverflow.com/questions/45406192/how-to-change-bootstrap-accordion-button-title-when-collapsed-using-css
-{% endcomment %}
+{%- endcomment -%}
 <script>
     $('#collapse-credits-pane').on('shown.bs.collapse', function () {
         $('#credits-button"').text('- Show less');
@@ -23,10 +23,9 @@ https://stackoverflow.com/questions/45406192/how-to-change-bootstrap-accordion-b
     });
 </script>
 
-
-{% comment %}
+{%- comment -%}
 Page proper
-{% endcomment %}
+{%- endcomment -%}
 <h2 class="text-left">{{ page.episode_name }}</h2>
 
 <div id="podlove" data-template="{{ site.url }}/res/podlove/template/episode.html"></div>
@@ -51,15 +50,15 @@ Page proper
 </div>
 
 <div class="row">
-    {% if page.previous %}
+    {%- if page.previous -%}
     <div class="col">
         <p class="text-left"><a href="{{ page.previous.url }}" style="font-size:32px;">&larr; Previous Episode</a></p>
     </div>
-    {% endif %}
+    {%- endif -%}
 
-    {% if page.next %}
+    {%- if page.next -%}
     <div class="col">
         <p class="text-right"><a href="{{ page.next.url }}" style="font-size:32px;">Next Episode &rarr;</a></p>
     </div>
-    {% endif %}
+    {%- endif -%}
 </div>

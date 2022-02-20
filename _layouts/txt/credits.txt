@@ -1,6 +1,7 @@
 {%- for chapter in page.chapters -%}
 {{ chapter.start | lyre_time_to_yt }} - {{ chapter.name }}
-{% endfor  %}
+{%- endfor -%}
+
 {{ page.summary | lyre_summary_text_wrap }}
 ... credits ... ... and then ...
 

@@ -16,18 +16,18 @@
     "poster": "{{ site.baseurl | append: "/res/poster/256x256/" | append: page.episode.poster | lyre_jsonify }}",
     "link": "{{ site.url }}/{{ page.permalink | lyre_jsonify }}",
     "chapters": [
-        {% for chapter in page.chapters %}
+        {%- for chapter in page.chapters -%}
         {
             "start": "{{ chapter.start | lyre_jsonify }}",
             "title": "{{ chapter.name | lyre_jsonify }}",
             "href":  "{{ chapter.href | lyre_jsonify }}",
             "image": "{{ chapter.image | lyre_jsonify }}"
-            {% if forloop.last %}
+            {%- if forloop.last -%}
         }
-            {% else %}
+            {%- else -%}
         },
-            {% endif %}
-        {% endfor %}
+            {%- endif -%}
+        {%- endfor -%}
     ],
     "audio": [
         {
@@ -38,69 +38,66 @@
         }
     ],
     "files": [
-        {% for file in page.files %}
+        {%- for file in page.files -%}
         {
             "url": "{{ file.url | lyre_jsonify }}",
             "size": "{{ file.size | lyre_jsonify }}",
             "title":  "{{ file.title | lyre_jsonify }}",
             "mimeType": "{{ file.mimetype | lyre_jsonify }}"
-            {% if forloop.last %}
+            {%- if forloop.last -%}
         }
-            {% else %}
+            {%- else -%}
         },
-            {% endif %}
-        {% endfor %}
+            {%- endif -%}
+        {%- endfor -%}
     ],
     "contributors": [
-        {% for contributor in page.contributors %}
+        {%- for contributor in page.contributors -%}
         {
-            {% comment %}
+            {%- comment -%}
                 I have to create two vars first.
-            {% endcomment %}
-            {% assign swp_group = "" %}
-            {% for group in contributor.groups %}
-                {% assign deref_group = site.data.groups | find: "id", group %}
-                {% if forloop.first %}
-                    {% assign swp_group = swp_group | append: deref_group.name %}
-                {% else %}
-                    {% assign swp_group = swp_group | append: ", " %}
-                    {% assign swp_group = swp_group | append: deref_group.name %}
-                {% endif %}
-            {% endfor %}
-            {% assign group_out = swp_group | split: ", " | sort_natural | join: ", " %}
-            {% comment %}
+            {%- endcomment -%}
+            {%- assign swp_group = "" -%}
+            {%- for group in contributor.groups -%}
+                {%- assign deref_group = site.data.groups | find: "id", group -%}
+                {%- if forloop.first -%}
+                    {%- assign swp_group = swp_group | append: deref_group.name -%}
+                {%- else -%}
+                    {%- assign swp_group = swp_group | append: ", " -%}
+                    {%- assign swp_group = swp_group | append: deref_group.name -%}
+                {%- endif -%}
+            {%- endfor -%}
+            {%- assign group_out = swp_group | split: ", " | sort_natural | join: ", " -%}
             
-            {% endcomment %}
-            {% assign swp_role = "" %}
-            {% for role in contributor.roles %}
-                {% assign deref_role = site.data.roles | find: "id", role %}
-                {% if forloop.first %}
-                    {% assign swp_role = swp_role | append: deref_role.name %}
-                {% else %}
-                    {% assign swp_role = swp_role | append: ", " %}
-                    {% assign swp_role = swp_role | append: deref_role.name %}
-                {% endif %}
-            {% endfor %}
-            {% assign role_out = swp_role | split: ", " | sort_natural | join: ", " %}
-            {% comment %}
+            {%- assign swp_role = "" -%}
+            {%- for role in contributor.roles -%}
+                {%- assign deref_role = site.data.roles | find: "id", role -%}
+                {%- if forloop.first -%}
+                    {%- assign swp_role = swp_role | append: deref_role.name -%}
+                {%- else -%}
+                    {%- assign swp_role = swp_role | append: ", " -%}
+                    {%- assign swp_role = swp_role | append: deref_role.name -%}
+                {%- endif -%}
+            {%- endfor -%}
+            {%- assign role_out = swp_role | split: ", " | sort_natural | join: ", " -%}
+            {%- comment %}
                 Have to reference the contributor's identity, too, woops
-            {% endcomment %}
-            {%  assign contrib_out = site.data.contributors | find: "id", contributor.id %}
-            {% comment %}
-
+            {%- endcomment -%}
+            {%- assign contrib_out = site.data.contributors | find: "id", contributor.id -%}
+            {%- comment -%}
                 Right, now we can do the actual thing.
-            {% endcomment %}
+            {%- endcomment -%}
             "id": "{{ contrib_out.id | lyre_jsonify }}",
             "name": "{{ contrib_out.nick_name | default: contrib_out.full_name | lyre_jsonify }}",
             "avatar":  "{{ contrib_out.avatar | lyre_jsonify }}",
             "role": "{{ role_out | lyre_jsonify }}",
             "group": "{{ group_out | lyre_jsonify }}",
             "comment": ""
-            {% if forloop.last %}
+            {%- if forloop.last -%}
         }
-            {% else %}
+            {%- else -%}
         },
-            {% endif %}
-        {% endfor %}
+            {%- endif -%}
+        {%- endfor -%}
     ]
 }
