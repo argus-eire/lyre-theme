@@ -11,30 +11,30 @@
 />
 
     <channel>
-        <title>{{ site.data.podlove.title }}</title>
-        <link>{{ site.data.podlove.homepage }}</link>
-        <description><![CDATA[{{ site.data.podlove.subtitle }}]]></description>
-        <lastBuildDate>{{ "now" | date: "%a, %d %b %Y %H:%M:%S %z" }}</lastBuildDate>
+        <title>{{ site.data.podlove.title | xml_escape }}</title>
+        <link>{{ site.data.podlove.homepage | xml_escape }}</link>
+        <description><![CDATA[{{ site.data.podlove.subtitle | xml_escape }}]]></description>
+        <lastBuildDate>{{ "now" | date: "%a, %d %b %Y %H:%M:%S %z" | xml_escape }}</lastBuildDate>
 
         <image>
-            <url>{{ site.data.podlove.poster }}</url>
-            <title>{{ site.data.podlove.title }}</title>
-            <link>{{ site.data.podlove.homepage }}</link>
+            <url>{{ site.data.podlove.poster | xml_escape }}</url>
+            <title>{{ site.data.podlove.title | xml_escape }}</title>
+            <link>{{ site.data.podlove.homepage | xml_escape }}</link>
         </image>
 
         <atom:link
             rel="self"
             type="application/rss+xml"
-            title="{{ site.data.podlove.rss.main.title }}"
-            href="{{ site.data.podlove.rss.main.self.first_link }}"
+            title="{{ site.data.podlove.rss.main.title | xml_escape }}"
+            href="{{ site.data.podlove.rss.main.self.first_link | xml_escape }}"
         />
 
         <atom:link
             rel="first"
-            href="{{ site.data.podlove.rss.main.self.first_link }}"
+            href="{{ site.data.podlove.rss.main.self.first_link | xml_escape }}"
         />
 
-        <language>{{ site.data.podlove.rss.common.language }}</language>
+        <language>{{ site.data.podlove.rss.common.language | xml_escape }}</language>
 
         {%- comment -%}
             Just the list of contributors to the entire podcast.
@@ -43,7 +43,7 @@
         {%- for contributor in site.data.podlove.rss.common.contributors -%}
         <atom:contributor>
             <atom:name>
-                {{ contributor.name }}
+                {{ contributor.name | xml_escape }}
             </atom:name>
         </atom:contributor>
         {%- endfor -%}
@@ -53,29 +53,29 @@
         {%- endcomment -%}
 
         {%- for contributor in site.data.podlove.rss.common.contributors -%}
-        <podcast:person img="{{ contributor.avatar }}">{{ contributor.name}}</podcast:person>
+        <podcast:person img="{{ contributor.avatar | xml_escape }}">{{ contributor.name | xml_escape }}</podcast:person>
         {%- endfor -%}
 
-        <generator>{{ site.data.podlove.common.generator }}</generator>
-        <copyright>{{ site.data.podlove.common.copyright }</copyright>
-        <itunes:author>{{ site.data.podlove.common.itunes.author }}</itunes:author>
-        <itunes:author>{{ site.data.podlove.common.itunes.type.episodic }}</itunes:author>
-        <itunes:summary><![CDATA[{{ site.data.podlove.summary }}]]></itunes:summary>
-        <itunes:category text="{{ site.data.podlove.rss.common.itunes.category">
+        <generator>{{ site.data.podlove.common.generator | xml_escape }}</generator>
+        <copyright>{{ site.data.podlove.common.copyright | xml_escape }</copyright>
+        <itunes:author>{{ site.data.podlove.common.itunes.author | xml_escape }}</itunes:author>
+        <itunes:author>{{ site.data.podlove.common.itunes.type.episodic | xml_escape }}</itunes:author>
+        <itunes:summary><![CDATA[{{ site.data.podlove.summary | xml_escape }}]]></itunes:summary>
+        <itunes:category text="{{ site.data.podlove.rss.common.itunes.category | xml_escape }}">
             {%- if site.data.podlove.rss.common.itunes.subcategory -%}
-            <itunes:category text="{{ site.data.podlove.rss.common.itunes.subcategory }}"></itunes:category>
+            <itunes:category text="{{ site.data.podlove.rss.common.itunes.subcategory | xml_escape }}"></itunes:category>
             {%- endif -%}
         </itunes:category>
 
         <itunes:owner>
-            <itunes:name>{{ site.data.podlove.rss.common.itunes.owner.name }}</itunes:name>
-            <itunes:email>{{ site.data.podlove.rss.common.itunes.owner.email }}</itunes:email>
+            <itunes:name>{{ site.data.podlove.rss.common.itunes.owner.name | xml_escape }}</itunes:name>
+            <itunes:email>{{ site.data.podlove.rss.common.itunes.owner.email | xml_escape }}</itunes:email>
         </itunes:owner>
         
-        <itunes:image href="{{ site.data.podlove.poster }}"/>
-        <itunes:subtitle>{{ site.data.podlove.subtitle }}</itunes:subtitle>
-        <itunes:block>{{ site.data.podlove.rss.common.itunes.block }}</itunes:block>
-        <itunes:explicit>{{ site.data.podlove.rss.common.itunes.explicit }}</itunes:explicit>
+        <itunes:image href="{{ site.data.podlove.poster | xml_escape }}"/>
+        <itunes:subtitle>{{ site.data.podlove.subtitle | xml_escape }}</itunes:subtitle>
+        <itunes:block>{{ site.data.podlove.rss.common.itunes.block | xml_escape }}</itunes:block>
+        <itunes:explicit>{{ site.data.podlove.rss.common.itunes.explicit | xml_escape }}</itunes:explicit>
 
         {%- comment -%}
             I need the list of episodes, in an uncertain order... Maybe reversed?
@@ -99,60 +99,60 @@
 
             {%- if swp_process -%}
         <item>
-            <title>{{ episode.title }}</title>
-            <link>{{ site.url }}/{{ episode.permalink }}</link>
+            <title>{{ episode.title | xml_escape }}</title>
+            <link>{{ site.url }}/{{ episode.permalink | xml_escape }}</link>
             <pubDate>{{ episode.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
-            <guid isPermaLink="false">{{ episode.date | time: "%Y-%m-%dT%H:%M:%S%:z"}}-{{ episode.permlink }}</guid>
-            <description><![CDATA[{{ episode.summary }}]]></description>
+            <guid isPermaLink="false">{{ episode.date | time: "%Y-%m-%dT%H:%M:%S%:z" | xml_escape }}-{{ episode.permlink | xml_escape }}</guid>
+            <description><![CDATA[{{ episode.summary | xml_escape }}]]></description>
             <atom:link
                 rel="http://podlove.org/deep-link"
-                href="{{ site.url }}/{{ episode.permalink }}/#"
+                href="{{ site.url | xml_escape }}/{{ episode.permalink | xml_escape }}/#"
             />
             <enclosure
-                url="{{ episode.audio.url }}"
-                length="{{ episode.audio.size }}"
-                type="{{ episode.audio.mimetype }}"
+                url="{{ episode.audio.url | xml_escape }}"
+                length="{{ episode.audio.size | xml_escape }}"
+                type="{{ episode.audio.mimetype | xml_escape }}"
             />
 
             {%- assign swp_int = episode.episode.duration | split: "." -%}
 
-            <itunes:duration>{{ swp_int[0] }}</itunes:duration>
-            <itunes:author>{{ site.data.podlove.common.itunes.author }}</itunes.author>
+            <itunes:duration>{{ swp_int[0] | xml_escape }}</itunes:duration>
+            <itunes:author>{{ site.data.podlove.common.itunes.author | xml_escape }}</itunes.author>
             <itunes:subtitle></itunes:subtitle>
-            <itunes:title>{{ episode.title }}</itunes:title>
-            <itunes:episode>{{ episode.order.episode }}</itunes:episode>
-            <itunes:episodeType>{{ episode.order.type }}</itunes:epiodeType>
-            <itunes:summary>{{ episode.summary }}</itunes:summary>
-            <itunes:image href="{{ episode.episode.poster }}"></itunes:image>
+            <itunes:title>{{ episode.title | xml_escape }}</itunes:title>
+            <itunes:episode>{{ episode.order.episode | xml_escape }}</itunes:episode>
+            <itunes:episodeType>{{ episode.order.type | xml_escape }}</itunes:epiodeType>
+            <itunes:summary>{{ episode.summary | xml_escape }}</itunes:summary>
+            <itunes:image href="{{ episode.episode.poster | xml_escape }}"></itunes:image>
             <content:encoded><![CDATA[
-                {{ episode.contents }}
+                {{ episode.contents | xml_escape }}
             ]]></content:encoded>
             {%- if episode.chapters and episode.chapters.size != 0 -%}
             <psc:chapters xmlns:psc="http://podlove.org/simple-chapters" version="1.2">
                 {%- for chapter in episode.chapters -%}
                 <psc:chapter
-                    start="{{ chapter.start }}"
-                    title="{{ chapter.title }}"
+                    start="{{ chapter.start | xml_escape }}"
+                    title="{{ chapter.title | xml_escape }}"
                 />
                 {%- endfor -%}
             </psc:chapters>
             {%- endif -%}
-            <itunes:season>{{ episode.order.season }}</itunes:season>
+            <itunes:season>{{ episode.order.season | xml_escape }}</itunes:season>
 
                 {%- for contributor in episode.contributors -%}
                     {%- assign swp_contrib = site.data.contributors | find: "id", contributor.id -%}
-            <atom:contributor><atom:name>{{ swp_contrib.nick_name | default: swp_contrib.full_name }}</atom:name></atom:contributor>
+            <atom:contributor><atom:name>{{ swp_contrib.nick_name | default: swp_contrib.full_name | xml_escape }}</atom:name></atom:contributor>
                 {%- endfor -%}
             
                 {%- for contributor in episode.contributors -%}
                     {%- assign swp_contrib = site.data.contributors | find: "id", contributor.id -%}
-            <podcast:person img="{{ swp_contrib.avatar }}">{{ swp_contrib.nick_name | default: swp_contrib.full_name }}</podcast:person>
+            <podcast:person img="{{ swp_contrib.avatar }}">{{ swp_contrib.nick_name | default: swp_contrib.full_name | xml_escape }}</podcast:person>
                 {%- endfor -%}
 
                 {%- if episode.transcripts and episode.chapters.size != 0 -%}
                     {%- for transcript in episode.transcripts -%}
             <podcast:transcript
-                url="{{ site.url }}/{{ transcript.url }}"
+                url="{{ site.url | xml_escape }}/{{ transcript.url | xml_escape }}"
                         {%- if transcript.format == "webvtt" -%}
                 type="text/vtt"
                         {%- elsif transcript.format == "json" -%}
