@@ -1,20 +1,20 @@
 <head>
-    {% comment %}
+    {%- comment -%}
     Google analytics
-    {% endcomment %}
+    {%- endcomment -%}
     <meta charset="utf-8">
 
-    {% comment %}
+    {%- comment -%}
     Makes Bootstrap happy
-    {% endcomment %}
+    {%- endcomment -%}
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ site.description }}">
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
 
-    {% comment %}
+    {%- comment -%}
     And here we see bootstrap and its buddies. Uses cerulean from bootswatch.
-    {% endcomment %}
+    {%- endcomment -%}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/cerulean/bootstrap.min.css"
         integrity="sha384-3fdgwJw17Bi87e1QQ4fsLn4rUFqWw//KU0g8TvV6quvahISRewev6/EocKNuJmEw" crossorigin="anonymous">
     <link href="{{ site.url }}/res/css/pygments.css" rel="stylesheet">
@@ -29,21 +29,20 @@
         integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
         crossorigin="anonymous"></script>
 
-    {% comment %}
+    {%- comment -%}
     Podlove player
-    {% endcomment %}
+    {%- endcomment -%}
     <script src="https://cdn.podlove.org/web-player/5.x/embed.js"></script>
 
-
-    {% comment %}
+    {%- comment -%}
     ----------------------------------------------------------------------------
     Everything else
     ----------------------------------------------------------------------------
-    {% endcomment %}
+    {%- endcomment -%}
     
-    {% comment %}
+    {%- comment -%}
     Favicon. Ugh.
-    {% endcomment %}
+    {%- endcomment -%}
     <link rel="icon" type="image/svg+xml" href="{{ site.url }}/favicon.svg"                               />
     <link rel="icon" type="image/png"     href="{{ site.url }}/favicon-32x32.png"         sizes="32x32"   />
     <link rel="icon"                      href="{{ site.url }}/favicon-192x192.png"       sizes="192x192" />
@@ -53,8 +52,8 @@
     <link rel="icon" type="image/png"     href="{{ site.url }}/favicon-32x32.png"         sizes="32x32"   />
     <link rel="icon" type="image/png"     href="{{ site.url }}/favicon-96x96.png"         sizes="96x96"   />
 
-    {% comment %}
+    {%- comment -%}
     Title for page
-    {% endcomment %}
+    {%- endcomment -%}
     <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
 </head>
