@@ -1,0 +1,47 @@
+---
+layout: default
+---
+
+<h2 class="text-left">{{ page.title }}</h2>
+
+<table class="table">
+<thead>
+    <tr>
+        {% comment %}
+        the first column should be a 64x64 version of the poster
+        {% endcomment %}
+        <th scope="col"></th>
+        <th scope="col">Date</th>
+        <th scope="col">Title</th>
+        <th scope="col">Duration</th>
+    </tr>
+</thead>
+
+
+    <tbody>
+{% assign ep_list = site.episodes | reverse %}
+
+{% for episode in ep_list %}
+    {% assign ep_listed = false %}
+    {% for cat in page.listcat %}
+        {% if episode.categories contains cat and ep_listed == false  %}
+        <tr>
+            <td>
+                <img src="{{ site.baseurl}}/res/poster/64x64/{{ episode.episode.poster }}" />
+            </td>
+            <td>
+                {{ episode.date | date: "%B %d, %Y %H:%M" }}
+            </td>
+            <td>
+                <strong><a href="{{ site.baseurl }}/{{ episode.permalink }}">{{ episode.title }}</a></strong>
+            </td>
+            <td>
+                {{ episode.episode.duration | slice: 0, 8 }}
+            </td>
+        </tr>
+            {% assign ep_listed = true %}
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+    </tbody>
+</table>

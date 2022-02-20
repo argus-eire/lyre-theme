@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss
+    version="2.0"
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+    xmlns:psc="http://podlove.org/simple-chapters"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:fh="http://purl.org/syndication/history/1.0"
+    xmlns:podcast="https://podcastindex.org/namespace/1.0"
+/>
+
+    <channel>
+        <title>{{ site.data.podlove.title }}</title>
+        <link>{{ site.data.podlove.homepage }}</link>
+        <description><![CDATA[{{ site.data.podlove.subtitle }}]]></description>
+        <lastBuildDate>{{ "now" | date: "%a, %d %b %Y %H:%M:%S %z" }}</lastBuildDate>
+
+        <image>
+            <url>{{ site.data.podlove.poster }}</url>
+            <title>{{ site.data.podlove.title }}</title>
+            <link>{{ site.data.podlove.homepage }}</link>
+        </image>
+
+        <atom:link
+            rel="self"
+            type="application/rss+xml"
+            title="{{ site.data.podlove.rss.main.title }}"
+            href="{{ site.data.podlove.rss.main.self.first_link }}"
+        />
+
+        <atom:link
+            rel="first"
+            href="{{ site.data.podlove.rss.main.self.first_link }}"
+        />
+
+        <language>{{ site.data.podlove.rss.common.language }}</language>
+
+        {% comment %}
+            Just the list of contributors to the entire podcast.
+        {% endcomment %}
+
+        {% for contributor in site.data.podlove.rss.common.contributors %}
+        <atom:contributor>
+            <atom:name>
+                {{ contributor.name }}
+            </atom:name>
+        </atom:contributor>
+        {% endfor %}
+
+        {% comment %}
+            And then again, but now with images, in a different format.
+        {% endcomment %}
+
+        {% for contributor in site.data.podlove.rss.common.contributors %}
+        <podcast:person img="{{ contributor.avatar }}">{{ contributor.name}}</podcast:person>
+        {% endfor %}
+
+        <generator>{{ site.data.podlove.common.generator }}</generator>
+        <copyright>{{ site.data.podlove.common.copyright }</copyright>
+        <itunes:author>{{ site.data.podlove.common.itunes.author }}</itunes:author>
+        <itunes:author>{{ site.data.podlove.common.itunes.type.episodic }}</itunes:author>
+        <itunes:summary><![CDATA[{{ site.data.podlove.summary }}]]></itunes:summary>
+        <itunes:category text="{{ site.data.podlove.rss.common.itunes.category">
+            {% if site.data.podlove.rss.common.itunes.subcategory %}
+            <itunes:category text="{{ site.data.podlove.rss.common.itunes.subcategory }}"></itunes:category>
+            {% endif %}
+        </itunes:category>
+
+        <itunes:owner>
+            <itunes:name>{{ site.data.podlove.rss.common.itunes.owner.name }}</itunes:name>
+            <itunes:email>{{ site.data.podlove.rss.common.itunes.owner.email }}</itunes:email>
+        </itunes:owner>
+        
+        <itunes:image href="{{ site.data.podlove.poster }}"/>
+        <itunes:subtitle>{{ site.data.podlove.subtitle }}</itunes:subtitle>
+        <itunes:block>{{ site.data.podlove.rss.common.itunes.block }}</itunes:block>
+        <itunes:explicit>{{ site.data.podlove.rss.common.itunes.explicit }}</itunes:explicit>
+
+        {% comment %}
+            I need the list of episodes, in an uncertain order... Maybe reversed?
+        {% endcomment %}
+
+        {% assign ep_list = site.episodes %}
+
+        {% for episode in ep_list %}
+            {% comment %}
+                Make sure it's "really" an episode first
+
+                TODO: Does this have to be scoped?
+            {% endcomment %}
+            
+            {% assign swp_process = false %}
+            
+            {% for cat in episode.categories %}
+            {% if "Episodes" == cat %}
+                {% assign swp_process = true %}
+            {% endif %}
+
+            {% if swp_process %}
+        <item>
+            <title>{{ episode.title }}</title>
+            <link>{{ site.url }}/{{ episode.permalink }}</link>
+            <pubDate>{{ episode.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
+            <guid isPermaLink="false">{{ episode.date | time: "%Y-%m-%dT%H:%M:%S%:z"}}-{{ episode.permlink }}</guid>
+            <description><![CDATA[{{ episode.summary }}]]></description>
+            <atom:link
+                rel="http://podlove.org/deep-link"
+                href="{{ site.url }}/{{ episode.permalink }}/#"
+            />
+            <enclosure
+                url="{{ episode.audio.url }}"
+                length="{{ episode.audio.size }}"
+                type="{{ episode.audio.mimetype }}"
+            />
+
+            {% assign swp_int = episode.episode.duration | split: "." %}
+
+            <itunes:duration>{{ swp_int[0] }}</itunes:duration>
+            <itunes:author>{{ site.data.podlove.common.itunes.author }}</itunes.author>
+            <itunes:subtitle></itunes:subtitle>
+            <itunes:title>{{ episode.title }}</itunes:title>
+            <itunes:episode>{{ episode.order.episode }}</itunes:episode>
+            <itunes:episodeType>{{ episode.order.type }}</itunes:epiodeType>
+            <itunes:summary>{{ episode.summary }}</itunes:summary>
+            <itunes:image href="{{ episode.episode.poster }}"></itunes:image>
+            <content:encoded><![CDATA[
+                {{ episode.contents }}
+            ]]></content:encoded>
+            {% if episode.chapters and episode.chapters.size != 0 %}
+            <psc:chapters xmlns:psc="http://podlove.org/simple-chapters" version="1.2">
+                {% for chapter in episode.chapters %}
+                <psc:chapter
+                    start="{{ chapter.start }}"
+                    title="{{ chapter.title }}"
+                />
+                {% endfor %}
+            </psc:chapters>
+            {% endif %}
+            <itunes:season>{{ episode.order.season }}</itunes:season>
+
+                {% for contributor in episode.contributors %}
+                    {%  assign swp_contrib = site.data.contributors | find: "id", contributor.id %}
+            <atom:contributor><atom:name>{{ swp_contrib.nick_name | default: swp_contrib.full_name }}</atom:name></atom:contributor>
+                {% endfor %}
+            
+                {% for contributor in episode.contributors %}
+                    {%  assign swp_contrib = site.data.contributors | find: "id", contributor.id %}
+            <podcast:person img="{{ swp_contrib.avatar }}">{{ swp_contrib.nick_name | default: swp_contrib.full_name }}</podcast:person>
+                {% endfor %}
+
+                {% if episode.transcripts and episode.chapters.size != 0 %}
+                    {% for transcript in episode.transcripts %}
+            <podcast:transcript
+                url="{{ site.url }}/{{ transcript.url }}"
+                        {% if transcript.format == "webvtt" %}
+                type="text/vtt"
+                        {% elsif transcript.format == "json" %}
+                type="application/json"
+                        {% elsif transcript.format == "xml" %}
+                type="application/xml"
+                        {% endif %}
+            />
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        </item>
+        {% endfor %}
+    </channel>
+</rss>

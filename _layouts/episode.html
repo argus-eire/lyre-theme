@@ -1,0 +1,65 @@
+---
+layout: default
+---
+{% comment %}
+Podlove stuff
+{% endcomment %}
+<script>
+    podlovePlayer('#podlove', '{{ site.url }}/res/podlove/episode/{{ page.permalink }}/episode.json', '{{ site.url }}/res/podlove/config.json');
+</script>
+
+{% comment %}
+Things to make the collapse text work right.
+
+Please see:
+https://stackoverflow.com/questions/45406192/how-to-change-bootstrap-accordion-button-title-when-collapsed-using-css
+{% endcomment %}
+<script>
+    $('#collapse-credits-pane').on('shown.bs.collapse', function () {
+        $('#credits-button"').text('- Show less');
+    });
+    $('#collapse-credits-pane').on('hidden.bs.collapse', function () {
+        $('#credits-button"').text('+ Show more');
+    });
+</script>
+
+
+{% comment %}
+Page proper
+{% endcomment %}
+<h2 class="text-left">{{ page.episode_name }}</h2>
+
+<div id="podlove" data-template="{{ site.url }}/res/podlove/template/episode.html"></div>
+
+<div class="accordion" id="credits-accordian">
+    <div class="card text-white bg-primary">
+        <div class="card-header" id="credits-heading">
+            <h2 class="card-title">
+                <button class="btn btn-link btn-block text-left text-white" type="button" data-toggle="collapse"
+                    data-target="#credits-body" aria-expanded="true" aria-controls="credits-body">
+                    Credits
+                </button>
+            </h2>
+        </div>
+
+        <div id="credits-body" class="collapse table-info" aria-labelledby="credits-heading" data-parent="#credits-accordian">
+            <div class="card-body card-text" style="background-color:#14668c;">
+                {{ page.content }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {% if page.previous %}
+    <div class="col">
+        <p class="text-left"><a href="{{ page.previous.url }}" style="font-size:32px;">&larr; Previous Episode</a></p>
+    </div>
+    {% endif %}
+
+    {% if page.next %}
+    <div class="col">
+        <p class="text-right"><a href="{{ page.next.url }}" style="font-size:32px;">Next Episode &rarr;</a></p>
+    </div>
+    {% endif %}
+</div>
